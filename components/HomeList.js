@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import {actionCreators, fetchHomes, getHomes} from "../redux/reducer";
 import {Header} from "react-native-elements";
 import PriceSlider from "./PriceSlider";
+import ViewDetails from "./ViewDetails";
 
 
 class HomeList extends Component {
@@ -54,7 +55,7 @@ class HomeList extends Component {
 
   openDetails(item) {
     console.log('openDetails!!')
-    console.log('item', item)
+    // console.log('item', item)
     this.setState({showDetails: true, showFilter: false, selectedIem: item});
   }
 /*
@@ -68,27 +69,38 @@ class HomeList extends Component {
   render() {
     const {homes} = this.props;
     const {showDetails, showFilter, selectedItem} = this.state;
+    console.log('selectedItem', selectedItem)
+
     return (
       <View>
+        {showDetails ? <View>
+            <ViewDetails
+              goBack={this.closeDetails.bind(this)}
+              details={selectedItem}
+            />
+          </View> :
+          <View>
+            <Header
+              leftComponent={{icon: 'menu', color: '#fff'}}
+              centerComponent={{text: 'MY TITLE', style: {color: '#fff'}}}
+              rightComponent={{icon: 'filter-list', color: '#fff', onPress: this.showFilter.bind(this)}}
+            />
+            {showFilter ?
+              <PriceSlider
+                onFilterChange={value => this.onFilterChange(value)}
+                startPrice={300}
+                min={0}
+                max={100}
+              />
+              : null}
+            <FlatList
+              styles={styles.container}
+              data={homes}
+              renderItem={this.renderItem}
+            />
 
-        <Header
-          leftComponent={{icon: 'menu', color: '#fff'}}
-          centerComponent={{text: 'MY TITLE', style: {color: '#fff'}}}
-          rightComponent={{icon: 'filter-list', color: '#fff', onPress: this.showFilter.bind(this)}}
-        />
-        {showFilter ?
-          <PriceSlider
-            onFilterChange={value => this.onFilterChange(value)}
-            startPrice={300}
-            min={0}
-            max={100}
-          />
-          : null}
-        <FlatList
-          styles={styles.container}
-          data={homes}
-          renderItem={this.renderItem}
-        />
+          </View>
+        }
 
       </View>
 
