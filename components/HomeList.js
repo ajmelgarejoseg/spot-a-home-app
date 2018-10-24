@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Button, FlatList, StyleSheet, Text, View} from 'react-native';
 import {connect} from 'react-redux';
-import {actionCreators, getHomes} from "../redux/reducer";
+import {actionCreators, fetchHomes, getHomes} from "../redux/reducer";
 
 
 class HomeList extends Component {
@@ -12,11 +12,8 @@ class HomeList extends Component {
   // }
 
   filterHome = (range) => {
-    console.log('inside filterHome inHomelist')
-    // console.log(this.props.store);
-    console.log(this.props.dispatch);
     const {store} = this.props;
-    range = {minPrice: 45, maxPrice: 425};
+    range = {minPrice: 375, maxPrice: 400};
     store.dispatch(actionCreators.filterHome(range))
   }
 
@@ -39,9 +36,14 @@ class HomeList extends Component {
     </View>
   );
 
-  componentDidMount() {
+  componentWillMount() {
     this.props.getHomes();
   }
+
+  // componentWillMount() {
+  //   const {store} = this.props;
+  //   store.dispatch(fetchHomes())
+  // }
 
   render() {
     const {homes} = this.props;
@@ -68,15 +70,8 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => {
-  console.log('hola')
-  // console.log(state)
   let storedHomes = [];
-  // console.log(state.repos);
-  if (state.homes.data) {
-    console.log('load!!!!!!!!!!!!!')
-    storedHomes = state.homes.data.homecards.map(home => ({key: home.id, ...home}));
-    // console.log(storedHomes.data.homecards);
-  }
+  storedHomes = state.homes.map(home => ({key: home.id.toString(), ...home}));
 
   return {
     homes: storedHomes

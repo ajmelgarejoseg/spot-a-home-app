@@ -11,16 +11,14 @@ export default function reducer(state = {homes: []}, action) {
 
   switch (type) {
     case FILTER_HOMES:
-      console.log(payload);
-      // console.log(homes);
       return {
         ...state,
-        homes: homes.data.homecards.filter((home) => home.pricePerMonth > payload.minPrice && home.pricePerMonth < payload.maxPrice),
+        homes: homes.filter((home) => home.pricePerMonth >= payload.minPrice && home.pricePerMonth <= payload.maxPrice),
       };
     case GET_HOMES:
       return {...state, loading: true};
     case GET_HOMES_SUCCESS:
-      return {...state, loading: false, homes: action.payload.data};
+      return {...state, loading: false, homes: action.payload.data.data.homecards};
     case GET_HOMES_FAIL:
       return {
         ...state,
@@ -33,7 +31,6 @@ export default function reducer(state = {homes: []}, action) {
 }
 
 export function getHomes() {
-  console.log( 'fetch output -->', fetch('https://www.spotahome.com/api/public/listings/similars/122836').then(res => res.json()).then(data => console.log(data)));
   return {
     type: GET_HOMES,
     payload: {
@@ -44,10 +41,29 @@ export function getHomes() {
   };
 }
 
+// export function fetchHomes() {
+//   return dispatch => fetch('https://www.spotahome.com/api/public/listings/similars/122836') // Redux Thunk handles these
+//     .then(res => res.json())
+//     .then(
+//       data => dispatch({ type: 'LOAD_DATA_SUCCESS', data }),
+//       err => dispatch({ type: 'LOAD_DATA_FAILURE', err })
+//     );
+// }
+
 export const actionCreators = {
   filterHome: (range) => {
     console.log('inside reducer')
     // console.log(range)
     return {type: FILTER_HOMES, payload: range}
-  }
+  },
+  // fetchHomes: () => {
+  //   return dispatch => fetch('https://www.spotahome.com/api/public/listings/similars/122836') // Redux Thunk handles these
+  //     .then(res => res.json())
+  //     .then(
+  //       data => dispatch({ type: 'LOAD_DATA_SUCCESS', data }),
+  //       err => dispatch({ type: 'LOAD_DATA_FAILURE', err })
+  //     );
+  // }
 }
+
+
