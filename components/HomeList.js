@@ -1,60 +1,107 @@
 import React, {Component} from 'react';
-import {Button, FlatList, StyleSheet, Text, View} from 'react-native';
+import {FlatList, StyleSheet, Text, TouchableWithoutFeedback, View} from 'react-native';
 import {connect} from 'react-redux';
 import {actionCreators, fetchHomes, getHomes} from "../redux/reducer";
+import {Header} from "react-native-elements";
+import PriceSlider from "./PriceSlider";
 
 
 class HomeList extends Component {
 
+  renderItem = ({item}) => {
+    return (
+      <TouchableWithoutFeedback style={styles.item} onPress={() => this.openDetails(item)}>
+        <View>
+          <Text>{item.id}</Text>
+          <Text>{item.title}</Text>
+          <Text>{item.pricePerMonth}</Text>
 
-  // static propTypes = {
-  //   dispatch: PropTypes.func.isRequired,
-  // }
+        </View>
 
-  filterHome = (range) => {
-    const {store} = this.props;
-    range = {minPrice: 375, maxPrice: 400};
-    store.dispatch(actionCreators.filterHome(range))
+
+      </TouchableWithoutFeedback>
+    )
+  };
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      showFilter: true,
+      showDetails: false,
+      selectedIem: {}
+    };
   }
-
-
-  renderItem = ({item}) => (
-    <View style={styles.item}>
-
-      <Text>{item.id}</Text>
-      <Text>{item.title}</Text>
-      <Text>{item.pricePerMonth}</Text>
-
-      <Button
-        onPress={this.filterHome}
-        title="Learn More"
-        color="#841584"
-        accessibilityLabel="filter"
-      />
-
-
-    </View>
-  );
 
   componentWillMount() {
     this.props.getHomes();
   }
 
-  // componentWillMount() {
-  //   const {store} = this.props;
-  //   store.dispatch(fetchHomes())
-  // }
+  filterHome(range) {
+    console.log('range', range)
+    // console.log(this.props);
+    range = {minPrice: 375, maxPrice: 400};
+    store.dispatch(actionCreators.filterHome(range))
+  }
 
+  showFilter() {
+    const {showFilter} = this.state;
+    this.setState({showFilter: !showFilter});
+  }
+
+  closeDetails() {
+    this.setState({showDetails: false});
+  }
+
+  openDetails(item) {
+    console.log('openDetails!!')
+    console.log('item', item)
+    this.setState({showDetails: true, showFilter: false, selectedIem: item});
+  }
+/*
+{showDetails ?
+        <ViewDetails
+          goBack={this.closeDetails.bind(this)}
+          details={selectedItem}
+        />
+        :null}
+*/
   render() {
     const {homes} = this.props;
+    const {showDetails, showFilter, selectedItem} = this.state;
     return (
-      <FlatList
-        styles={styles.container}
-        data={homes}
-        renderItem={this.renderItem}
-      />
+      <View>
+
+        <Header
+          leftComponent={{icon: 'menu', color: '#fff'}}
+          centerComponent={{text: 'MY TITLE', style: {color: '#fff'}}}
+          rightComponent={{icon: 'filter-list', color: '#fff', onPress: this.showFilter.bind(this)}}
+        />
+        {showFilter ?
+          <PriceSlider
+            onFilterChange={value => this.onFilterChange(value)}
+            startPrice={300}
+            min={0}
+            max={100}
+          />
+          : null}
+        <FlatList
+          styles={styles.container}
+          data={homes}
+          renderItem={this.renderItem}
+        />
+
+      </View>
 
     );
+  }
+
+  onFilterChange(value) {
+    console.log('parent', value)
+    // let range = {minPrice: value[0], maxPrice: value[1]};
+    let range = {minPrice: 390, maxPrice: 450};
+    // console.log('propsssss', this.props);
+    this.props.store.dispatch(actionCreators.filterHome(range))
+    // this.filterHome(value);
   }
 }
 

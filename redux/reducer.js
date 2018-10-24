@@ -8,7 +8,7 @@ export const GET_HOMES_FAIL = 'spotahome/repos/LOAD_FAIL';
 export default function reducer(state = {homes: []}, action) {
   const {type, payload} = action;
   const {homes} = state
-
+  // console.log(state);
   switch (type) {
     case FILTER_HOMES:
       return {
