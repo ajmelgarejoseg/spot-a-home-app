@@ -41,29 +41,14 @@ export function getHomes() {
   };
 }
 
-// export function fetchHomes() {
-//   return dispatch => fetch('https://www.spotahome.com/api/public/listings/similars/122836') // Redux Thunk handles these
-//     .then(res => res.json())
-//     .then(
-//       data => dispatch({ type: 'LOAD_DATA_SUCCESS', data }),
-//       err => dispatch({ type: 'LOAD_DATA_FAILURE', err })
-//     );
-// }
 
 export const actionCreators = {
   filterHome: (range) => {
-    console.log('inside reducer')
+    console.log('inside reducer, range is ', range)
     // console.log(range)
     return {type: FILTER_HOMES, payload: range}
   },
-  // fetchHomes: () => {
-  //   return dispatch => fetch('https://www.spotahome.com/api/public/listings/similars/122836') // Redux Thunk handles these
-  //     .then(res => res.json())
-  //     .then(
-  //       data => dispatch({ type: 'LOAD_DATA_SUCCESS', data }),
-  //       err => dispatch({ type: 'LOAD_DATA_FAILURE', err })
-  //     );
-  // }
+
 }
 
 

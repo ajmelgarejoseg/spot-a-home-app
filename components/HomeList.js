@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {FlatList, StyleSheet, Text, TouchableWithoutFeedback, View} from 'react-native';
 import {connect} from 'react-redux';
-import {actionCreators, fetchHomes, getHomes} from "../redux/reducer";
+import {actionCreators, getHomes} from "../redux/reducer";
 import {Header} from "react-native-elements";
 import PriceSlider from "./PriceSlider";
 import ViewDetails from "./ViewDetails";
@@ -16,10 +16,7 @@ class HomeList extends Component {
           <Text>{item.id}</Text>
           <Text>{item.title}</Text>
           <Text>{item.pricePerMonth}</Text>
-
         </View>
-
-
       </TouchableWithoutFeedback>
     )
   };
@@ -54,19 +51,14 @@ class HomeList extends Component {
   }
 
   openDetails(item) {
-    console.log('openDetails!!')
-    // console.log('item', item)
     this.setState({showDetails: true, showFilter: false, selectedItem: item});
   }
 
-  /*
-  {showDetails ?
-          <ViewDetails
-            goBack={this.closeDetails.bind(this)}
-            details={selectedItem}
-          />
-          :null}
-  */
+  onClearFilter(range) {
+    this.onFilterChange(range);
+    // this.props.store.dispatch(actionCreators.filterHome(range))
+  }
+
   render() {
     const {homes} = this.props;
     const {showDetails, showFilter, selectedItem} = this.state;
@@ -75,7 +67,7 @@ class HomeList extends Component {
     return (
       <View>
         {showDetails ?
-          <View>
+          <View style={styles.details}>
             <ViewDetails
               goBack={this.closeDetails.bind(this)}
               details={selectedItem}
@@ -84,13 +76,14 @@ class HomeList extends Component {
           :
           <View>
             <Header
-              leftComponent={{icon: 'menu', color: '#fff'}}
-              centerComponent={{text: 'MY TITLE', style: {color: '#fff'}}}
+              backgroundColor={'#00BD95'}
+              centerComponent={{text: '[spotahome]', style: {color: '#fff'}}}
               rightComponent={{icon: 'filter-list', color: '#fff', onPress: this.showFilter.bind(this)}}
             />
             {showFilter ?
               <PriceSlider
                 onFilterChange={value => this.onFilterChange(value)}
+                onClearFilter={range => this.onClearFilter(range)}
                 startPrice={300}
                 min={0}
                 max={100}
@@ -111,9 +104,8 @@ class HomeList extends Component {
   }
 
   onFilterChange(value) {
-    console.log('parent', value)
-    // let range = {minPrice: value[0], maxPrice: value[1]};
-    let range = {minPrice: 390, maxPrice: 450};
+    console.log('parent store props', this.props.store)
+    let range = {minPrice: value[0], maxPrice: value[1]};
     // console.log('propsssss', this.props);
     this.props.store.dispatch(actionCreators.filterHome(range))
     // this.filterHome(value);
@@ -123,6 +115,13 @@ class HomeList extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1
+  },
+  details: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'stretch',
+    //width: '100%'
+
   },
   item: {
     padding: 16,
@@ -134,7 +133,6 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => {
   let storedHomes = [];
   storedHomes = state.homes.map(home => ({key: home.id.toString(), ...home}));
-
   return {
     homes: storedHomes
   };

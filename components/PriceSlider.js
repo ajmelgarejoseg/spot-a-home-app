@@ -39,14 +39,16 @@ class PriceSlider extends Component {
     this.setState({filterValue: this.formatIndex(this.state.filterValue)});
   }
 
-  valueChange(value) {
-    console.log('valueChange', value);
+  valueChange(value, val) {
+    this.props.onFilterChange(this.state.filterValue)
+
     this.setState({filterValue: this.formatIndex(value)});
   }
 
-  onPressButton() {
+  onClearButton() {
     // console.log(this.state.filterValue);
-    this.props.onFilterChange(this.state.filterValue)
+    this.props.onClearFilter(this.formatIndex([0,100]));
+    this.setState({filterValue: this.formatIndex([0, 100])});
   }
 
   render() {
@@ -66,8 +68,8 @@ class PriceSlider extends Component {
             {this.state.filterValue[0] + ' - ' + this.state.filterValue[1]}
           </Text>
           <Button
-            onPress={this.onPressButton.bind(this)}
-            title={'APPLY'}
+            onPress={this.onClearButton.bind(this)}
+            title={'CLEAR'}
           />
 
 
