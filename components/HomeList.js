@@ -29,7 +29,7 @@ class HomeList extends Component {
     this.state = {
       showFilter: true,
       showDetails: false,
-      selectedIem: {}
+      selectedItem: {}
     };
   }
 
@@ -56,16 +56,17 @@ class HomeList extends Component {
   openDetails(item) {
     console.log('openDetails!!')
     // console.log('item', item)
-    this.setState({showDetails: true, showFilter: false, selectedIem: item});
+    this.setState({showDetails: true, showFilter: false, selectedItem: item});
   }
-/*
-{showDetails ?
-        <ViewDetails
-          goBack={this.closeDetails.bind(this)}
-          details={selectedItem}
-        />
-        :null}
-*/
+
+  /*
+  {showDetails ?
+          <ViewDetails
+            goBack={this.closeDetails.bind(this)}
+            details={selectedItem}
+          />
+          :null}
+  */
   render() {
     const {homes} = this.props;
     const {showDetails, showFilter, selectedItem} = this.state;
@@ -73,12 +74,14 @@ class HomeList extends Component {
 
     return (
       <View>
-        {showDetails ? <View>
+        {showDetails ?
+          <View>
             <ViewDetails
               goBack={this.closeDetails.bind(this)}
               details={selectedItem}
             />
-          </View> :
+          </View>
+          :
           <View>
             <Header
               leftComponent={{icon: 'menu', color: '#fff'}}
