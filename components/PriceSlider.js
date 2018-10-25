@@ -36,18 +36,12 @@ class PriceSlider extends Component {
       filterValue: rangePrice
     };
   }
-  // componentDidMount() {
-  //   // this.setState({filterValue: this.formatIndex(this.state.filterValue)});
-  // }
 
   valueChange(value) {
-    // this.props.onFilterChange(this.state.filterValue)
-    // console.log('value', value);
     this.setState({filterValue: value});
   }
 
   onClearButton() {
-    // console.log(this.state.filterValue);
     this.props.onClearFilter();
     this.setState({filterValue: this.props.rangePrice});
   }
@@ -91,11 +85,5 @@ class PriceSlider extends Component {
       </View>
     )
   }
-
-  // formatIndex(arr) {
-  //   const { rangePrice } = this.props;
-  //
-  //   return [(rangePrice[0] + arr[0]*5), (300 + arr[1]*5)];
-  // }
 }
 export default PriceSlider;
