@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {ActivityIndicator, FlatList, StyleSheet, Text, TouchableWithoutFeedback, View} from 'react-native';
+import {ActivityIndicator, FlatList, StyleSheet, Text, TouchableWithoutFeedback, View, BackHandler} from 'react-native';
 import {connect} from 'react-redux';
 import {getHomes} from "../redux/reducer";
 import {Header} from "react-native-elements";
@@ -18,10 +18,36 @@ const styles = StyleSheet.create({
 
   },
   item: {
-    padding: 16,
-    borderBottomWidth: 1,
+    display: 'flex',
+    paddingTop: 8,
+    paddingBottom: 16,
+    paddingHorizontal: 16,
+    borderBottomWidth: 2,
     borderBottomColor: '#ccc',
-    margin: 10
+    marginTop: 10,
+    backgroundColor: '#f5ffdb'
+  },
+  cell: {
+    display: 'flex',
+    justifyContent: 'center'
+  },
+  id:{
+    flexDirection: 'row',
+    marginLeft: 'auto',
+    fontWeight: 'bold',
+    color: '#888a8c',
+    fontSize: 10
+  },
+  title: {
+    fontSize: 18,
+
+  },
+  price: {
+    flexDirection: 'row',
+    marginLeft: 'auto',
+    justifyContent: 'flex-end',
+    fontWeight: 'bold',
+    color: '#00C146'
   },
   horizontal: {
     flexDirection: 'row',
@@ -38,13 +64,15 @@ class HomeList extends Component {
 
   renderItem = ({item}) => {
     return (
-      <TouchableWithoutFeedback onPress={() => this.openDetails(item)}>
-        <View style={styles.item}>
-          <Text>{item.id}</Text>
-          <Text>{item.title}</Text>
-          <Text>{item.pricePerMonth}</Text>
-        </View>
-      </TouchableWithoutFeedback>
+      <View style={styles.item}>
+        <TouchableWithoutFeedback onPress={() => this.openDetails(item)}>
+          <View style={styles.cell}>
+            <Text style={styles.id}>{'#'}{item.id}</Text>
+            <Text style={styles.title}>{item.title}</Text>
+            <Text style={styles.price}>{item.pricePerMonth}{item.currencySymbol}</Text>
+          </View>
+        </TouchableWithoutFeedback>
+      </View>
     )
   };
 
@@ -59,10 +87,16 @@ class HomeList extends Component {
       range: [],
       filteredRange: []
     };
+    this.handleBackPress = this.handleBackPress.bind(this);
   }
 
   componentWillMount() {
     this.props.getHomes();
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -112,6 +146,7 @@ class HomeList extends Component {
     // const sortedHomes_.sortBy(homes, 'pricePerMonth'));
     // console.log('currentHomeList', currentHomeList)
 
+
     return (
       <View>
         {canRender ?
@@ -136,6 +171,7 @@ class HomeList extends Component {
                     onClearFilter={range => this.onClearFilter(range)}
                     onChangeOrder={this.onChangeOrder.bind(this)}
                     rangePrice={this.getOriginalRange(homes)}
+                    currency={data.length ? data[0].currencySymbol : '€'}
                   />
                   : null}
                 <FlatList
@@ -176,6 +212,10 @@ class HomeList extends Component {
   onChangeOrder() {
     const { ascPrice } = this.state;
     this.setState({ascPrice: !ascPrice});
+  }
+
+  handleBackPress() {
+    this.state.showDetails ? this.setState({ showDetails: false}) : null;
   }
 }
 
