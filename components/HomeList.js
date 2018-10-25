@@ -67,8 +67,6 @@ class HomeList extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.homes.length !== 0) {
-      // console.log(nextProps.homes)
-      // console.log('inside willReceive')
       this.setState({filteredRange: this.getOriginalRange(nextProps.homes)});
     }
   }
@@ -136,9 +134,8 @@ class HomeList extends Component {
                   <PriceSlider
                     onFilterChange={value => this.onFilterChange(value)}
                     onClearFilter={range => this.onClearFilter(range)}
+                    onChangeOrder={this.onChangeOrder.bind(this)}
                     rangePrice={this.getOriginalRange(homes)}
-                    min={0}
-                    max={100}
                   />
                   : null}
                 <FlatList
@@ -174,6 +171,11 @@ class HomeList extends Component {
 
   onFilterChange(value) {
     this.setState({filteredRange: value});
+  }
+
+  onChangeOrder() {
+    const { ascPrice } = this.state;
+    this.setState({ascPrice: !ascPrice});
   }
 }
 
