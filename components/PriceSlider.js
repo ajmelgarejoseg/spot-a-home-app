@@ -59,20 +59,21 @@ class PriceSlider extends Component {
   render() {
     console.log('rangePrice', this.props.rangePrice);
     const { rangePrice } = this.props;
+    const { filterValue } = this.state;
     return (
       <View style={styles.priceWrapper}>
         <View style={styles.multiSlider}>
           <MultiSlider
             sliderLength={200}
             onValuesChange={(value) => this.valueChange(value)}
-            values={rangePrice}
+            values={filterValue}
             min={rangePrice[0]}
             max={rangePrice[1]}
           />
         </View>
         <View>
           <Text>
-            {this.state.filterValue[0] + ' - ' + this.state.filterValue[1]}
+            {filterValue[0] + ' - ' + filterValue[1]}
           </Text>
           <View>
             <Button
