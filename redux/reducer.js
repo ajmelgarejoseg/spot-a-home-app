@@ -7,8 +7,8 @@ export const GET_HOMES_FAIL = 'spotahome/repos/LOAD_FAIL';
 
 export default function reducer(state = {homes: []}, action) {
   const {type, payload} = action;
-  const {homes} = state
-  // console.log(state);
+  const {homes} = state;
+  console.log('numero pisoss-->>',homes.length);
   switch (type) {
     case FILTER_HOMES:
       return {
@@ -44,9 +44,12 @@ export function getHomes() {
 
 export const actionCreators = {
   filterHome: (range) => {
-    console.log('inside reducer, range is ', range)
+    // console.log('inside reducer, range is ', range)
     // console.log(range)
     return {type: FILTER_HOMES, payload: range}
+  },
+  clearFilter: (range) => {
+    return {type: GET_HOMES, payload: range}
   },
 
 }

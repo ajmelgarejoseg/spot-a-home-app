@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
   title: {
     marginRight: 20,
     marginLeft: 20,
-    fontSize: 30,
+    fontSize: 20,
   },
   card: {
     borderWidth: 1,
@@ -61,30 +61,34 @@ class ViewDetails extends Component {
         <Card
           containerStyle={styles.card}
           title={details.title}
+          titleStyle={styles.title}
           image={{uri: details.mainPhotoUrl}}>
 
           <Text style={{marginBottom: 10}}>
             {details.description}
           </Text>
-          <Text style={styles.price}>
-            {details.pricePerMonth} {details.currencySymbol}
-          </Text>
-          <Text style={styles.city}>
-            {'City:'} {details.city}
-          </Text>
-          <Text style={styles.text}>
-            {'Runner:'} {details.runnerName}
-          </Text>
-          {details.sharedRoom ?
-            <Text style={styles.text}>
-              {'Shared room'}
+          <View>
+            <Text style={styles.price}>
+              {details.pricePerMonth} {details.currencySymbol}
             </Text>
-            :
+            <Text style={styles.city}>
+              {'City:'} {details.city}
+            </Text>
             <Text style={styles.text}>
+              {'Runner:'} {details.runnerName}
+            </Text>
+            {details.sharedRoom ?
+              <Text style={styles.text}>
+                {'Shared room'}
+              </Text>
+              :
+              <Text style={styles.text}>
 
-              {'Single room'}
-            </Text>
-          }
+                {'Single room'}
+              </Text>
+            }
+
+          </View>
           <Button
             icon={<Icon name='info' color='#ffffff'/>}
             backgroundColor='#888a8c'

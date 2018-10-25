@@ -31,46 +31,59 @@ class PriceSlider extends Component {
 
   constructor(props) {
     super(props);
+    const { rangePrice } = this.props;
     this.state = {
-      filterValue: [0, 100]
+      filterValue: rangePrice
     };
   }
-  componentDidMount() {
-    this.setState({filterValue: this.formatIndex(this.state.filterValue)});
-  }
+  // componentDidMount() {
+  //   // this.setState({filterValue: this.formatIndex(this.state.filterValue)});
+  // }
 
-  valueChange(value, val) {
-    this.props.onFilterChange(this.state.filterValue)
-
-    this.setState({filterValue: this.formatIndex(value)});
+  valueChange(value) {
+    // this.props.onFilterChange(this.state.filterValue)
+    // console.log('value', value);
+    this.setState({filterValue: value});
   }
 
   onClearButton() {
     // console.log(this.state.filterValue);
-    this.props.onClearFilter(this.formatIndex([0,100]));
-    this.setState({filterValue: this.formatIndex([0, 100])});
+    this.props.onClearFilter();
+    this.setState({filterValue: this.props.rangePrice});
+  }
+
+  onApplyButton() {
+    this.props.onFilterChange(this.state.filterValue)
   }
 
   render() {
-    // console.log(this.state);
+    console.log('rangePrice', this.props.rangePrice);
+    const { rangePrice } = this.props;
     return (
       <View style={styles.priceWrapper}>
         <View style={styles.multiSlider}>
           <MultiSlider
             sliderLength={200}
             onValuesChange={(value) => this.valueChange(value)}
-            values={[0, 100]}
-            max={100}
+            values={rangePrice}
+            min={rangePrice[0]}
+            max={rangePrice[1]}
           />
         </View>
         <View>
           <Text>
             {this.state.filterValue[0] + ' - ' + this.state.filterValue[1]}
           </Text>
-          <Button
-            onPress={this.onClearButton.bind(this)}
-            title={'CLEAR'}
-          />
+          <View>
+            <Button
+              onPress={this.onClearButton.bind(this)}
+              title={'CLEAR'}
+            />
+            <Button
+              onPress={this.onApplyButton.bind(this)}
+              title={'APPLY'}
+            />
+          </View>
 
 
         </View>
@@ -78,8 +91,10 @@ class PriceSlider extends Component {
     )
   }
 
-  formatIndex(arr) {
-    return [(300 + arr[0]*5), (300 + arr[1]*5)];
-  }
+  // formatIndex(arr) {
+  //   const { rangePrice } = this.props;
+  //
+  //   return [(rangePrice[0] + arr[0]*5), (300 + arr[1]*5)];
+  // }
 }
 export default PriceSlider;

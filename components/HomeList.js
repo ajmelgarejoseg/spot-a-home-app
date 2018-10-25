@@ -1,18 +1,45 @@
 import React, {Component} from 'react';
-import {FlatList, StyleSheet, Text, TouchableWithoutFeedback, View} from 'react-native';
+import {ActivityIndicator, FlatList, StyleSheet, Text, TouchableWithoutFeedback, View} from 'react-native';
 import {connect} from 'react-redux';
-import {actionCreators, getHomes} from "../redux/reducer";
+import {getHomes} from "../redux/reducer";
 import {Header} from "react-native-elements";
 import PriceSlider from "./PriceSlider";
 import ViewDetails from "./ViewDetails";
+import _ from 'lodash';
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1
+  },
+  details: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'stretch',
+
+  },
+  item: {
+    padding: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
+    margin: 10
+  },
+  horizontal: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    padding: 10
+  },
+  indicatorContainer: {
+    flex: 1,
+    justifyContent: 'center'
+  }
+});
 
 class HomeList extends Component {
 
   renderItem = ({item}) => {
     return (
-      <TouchableWithoutFeedback style={styles.item} onPress={() => this.openDetails(item)}>
-        <View>
+      <TouchableWithoutFeedback onPress={() => this.openDetails(item)}>
+        <View style={styles.item}>
           <Text>{item.id}</Text>
           <Text>{item.title}</Text>
           <Text>{item.pricePerMonth}</Text>
@@ -26,7 +53,11 @@ class HomeList extends Component {
     this.state = {
       showFilter: true,
       showDetails: false,
-      selectedItem: {}
+      selectedItem: {},
+      currentHomeList: [],
+      ascPrice: true,
+      range: [],
+      filteredRange: []
     };
   }
 
@@ -34,16 +65,98 @@ class HomeList extends Component {
     this.props.getHomes();
   }
 
-  filterHome(range) {
-    console.log('range', range)
-    // console.log(this.props);
-    range = {minPrice: 375, maxPrice: 400};
-    store.dispatch(actionCreators.filterHome(range))
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.homes.length !== 0) {
+      // console.log(nextProps.homes)
+      // console.log('inside willReceive')
+      this.setState({filteredRange: this.getOriginalRange(nextProps.homes)});
+    }
   }
 
-  showFilter() {
-    const {showFilter} = this.state;
-    this.setState({showFilter: !showFilter});
+  onClearFilter() {
+    const {homes} = this.props;
+    this.setState({filteredRange: this.getOriginalRange(homes)})
+    // TimerMixin.setTimeout(() => {
+    //   this.props.store.dispatch(actionCreators.clearFilter(range))
+    // }, 500);
+  }
+
+  onFilter() {
+    const {homes} = this.props;
+    const {filteredRange, ascPrice} = this.state;
+    if (homes.length !== 0) {
+
+      let filtered = homes.filter((home) => home.pricePerMonth >= filteredRange[0] && home.pricePerMonth <= filteredRange[1])
+      return _.orderBy(filtered, 'pricePerMonth', ascPrice ? 'asc' : 'desc')
+
+    } else {
+      return [];
+    }
+  }
+
+
+  getOriginalRange(homes) {
+    // const {homes} = this.props;
+    const maxPriceHome = _.maxBy(homes, 'pricePerMonth');
+    const minPriceHome = _.minBy(homes, 'pricePerMonth');
+    // console.log('maxPriceHome', maxPriceHome)
+
+    return [minPriceHome.pricePerMonth, maxPriceHome.pricePerMonth];
+  }
+
+  render() {
+    const {homes} = this.props;
+    const {showDetails, showFilter, selectedItem, filteredRange} = this.state;
+    const data = this.onFilter();
+    // const range = this.getOriginalRange(homes);
+    const canRender = (homes.length !== 0);
+    // const filteredList = this.onFilter();
+    // const sortedHomes_.sortBy(homes, 'pricePerMonth'));
+    // console.log('currentHomeList', currentHomeList)
+
+    return (
+      <View>
+        {canRender ?
+          <View>
+            {showDetails ?
+              <View style={styles.details}>
+                <ViewDetails
+                  goBack={this.closeDetails.bind(this)}
+                  details={selectedItem}
+                />
+              </View>
+              :
+              <View>
+                <Header
+                  backgroundColor={'#00BD95'}
+                  centerComponent={{text: '[spotahome]', style: {color: '#fff'}}}
+                  rightComponent={{icon: 'filter-list', color: '#fff', onPress: this.showFilter.bind(this)}}
+                />
+                {showFilter ?
+                  <PriceSlider
+                    onFilterChange={value => this.onFilterChange(value)}
+                    onClearFilter={range => this.onClearFilter(range)}
+                    rangePrice={this.getOriginalRange(homes)}
+                    min={0}
+                    max={100}
+                  />
+                  : null}
+                <FlatList
+                  styles={styles.container}
+                  data={data}
+                  renderItem={this.renderItem}
+                />
+
+              </View>
+            }
+          </View>
+          :
+          <View style={[styles.container, styles.horizontal]}>
+            <ActivityIndicator size="large" color="#0000ff" />
+          </View>
+        }
+      </View>
+    );
   }
 
   closeDetails() {
@@ -54,81 +167,15 @@ class HomeList extends Component {
     this.setState({showDetails: true, showFilter: false, selectedItem: item});
   }
 
-  onClearFilter(range) {
-    this.onFilterChange(range);
-    // this.props.store.dispatch(actionCreators.filterHome(range))
-  }
-
-  render() {
-    const {homes} = this.props;
-    const {showDetails, showFilter, selectedItem} = this.state;
-    console.log('selectedItem', selectedItem)
-
-    return (
-      <View>
-        {showDetails ?
-          <View style={styles.details}>
-            <ViewDetails
-              goBack={this.closeDetails.bind(this)}
-              details={selectedItem}
-            />
-          </View>
-          :
-          <View>
-            <Header
-              backgroundColor={'#00BD95'}
-              centerComponent={{text: '[spotahome]', style: {color: '#fff'}}}
-              rightComponent={{icon: 'filter-list', color: '#fff', onPress: this.showFilter.bind(this)}}
-            />
-            {showFilter ?
-              <PriceSlider
-                onFilterChange={value => this.onFilterChange(value)}
-                onClearFilter={range => this.onClearFilter(range)}
-                startPrice={300}
-                min={0}
-                max={100}
-              />
-              : null}
-            <FlatList
-              styles={styles.container}
-              data={homes}
-              renderItem={this.renderItem}
-            />
-
-          </View>
-        }
-
-      </View>
-
-    );
+  showFilter() {
+    const {showFilter} = this.state;
+    this.setState({showFilter: !showFilter});
   }
 
   onFilterChange(value) {
-    console.log('parent store props', this.props.store)
-    let range = {minPrice: value[0], maxPrice: value[1]};
-    // console.log('propsssss', this.props);
-    this.props.store.dispatch(actionCreators.filterHome(range))
-    // this.filterHome(value);
+    this.setState({filteredRange: value});
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  },
-  details: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'stretch',
-    //width: '100%'
-
-  },
-  item: {
-    padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc'
-  }
-});
 
 const mapStateToProps = state => {
   let storedHomes = [];
