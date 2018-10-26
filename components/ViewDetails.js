@@ -40,11 +40,11 @@ const styles = StyleSheet.create({
     borderColor: '#ddd',
     borderBottomWidth: 0,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.8,
     shadowRadius: 5,
   }
-})
+});
 
 class ViewDetails extends Component {
 
@@ -106,6 +106,4 @@ class ViewDetails extends Component {
 }
 
 export default ViewDetails;
-// <View style={styles.detailsWrapper}>
-//   <Text>{details.id}</Text>
-// </View>
+

@@ -1,18 +1,19 @@
 import React, {Component, PropTypes} from 'react'
 import {StyleSheet, View} from 'react-native'
 import MultiSlider from '@ptomasroos/react-native-multi-slider/MultiSlider';
-import {Button, Icon, Text} from 'react-native-elements';
+import {Button, Text} from 'react-native-elements';
 
 const styles = StyleSheet.create({
   priceWrapper: {
     backgroundColor: '#e8fce6',
     display: 'flex',
-    // justifyContent: 'center',
-    // flexDirection: 'row',
-    // height: 100,
-    // width: '100%',
-    // borderWidth: 2,
-    // borderColor: 'black',
+    borderWidth: 2,
+    borderBottomColor: '#00C146',
+    borderBottomLeftRadius:20,
+    borderBottomRightRadius:20,
+    borderTopColor: '#e8fce6',
+    borderRightColor: '#00C146',
+    borderLeftColor: '#00C146'
   },
   priceRange: {
     marginTop: 20,
@@ -26,8 +27,6 @@ const styles = StyleSheet.create({
   },
 
   multiSlider: {
-    // marginLeft: 50,
-    // marginTop: 20,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -45,12 +44,8 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: '#fff',
     borderColor: '#00C146',
-    // color: '#00C146',
     borderWidth: 1,
     borderRadius: 15,
-    // borderColor: '#ddd',
-    // maxWidth: '20%'
-    // color: '#4a6423'
   }
 })
 
@@ -132,7 +127,6 @@ class PriceSlider extends Component {
                 onPress={this.onChangeOrder.bind(this)}
                 title={'ASC'}
               />
-
             }
           </View>
         </View>

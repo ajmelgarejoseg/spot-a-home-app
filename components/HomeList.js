@@ -8,8 +8,11 @@ import ViewDetails from "./ViewDetails";
 import _ from 'lodash';
 
 const styles = StyleSheet.create({
+  wrapper: {
+    display: 'flex',
+  },
   container: {
-    flex: 1
+    flex: 1,
   },
   details: {
     display: 'flex',
@@ -108,9 +111,6 @@ class HomeList extends Component {
   onClearFilter() {
     const {homes} = this.props;
     this.setState({filteredRange: this.getOriginalRange(homes)})
-    // TimerMixin.setTimeout(() => {
-    //   this.props.store.dispatch(actionCreators.clearFilter(range))
-    // }, 500);
   }
 
   onFilter() {
@@ -126,29 +126,20 @@ class HomeList extends Component {
     }
   }
 
-
   getOriginalRange(homes) {
-    // const {homes} = this.props;
     const maxPriceHome = _.maxBy(homes, 'pricePerMonth');
     const minPriceHome = _.minBy(homes, 'pricePerMonth');
-    // console.log('maxPriceHome', maxPriceHome)
-
     return [minPriceHome.pricePerMonth, maxPriceHome.pricePerMonth];
   }
 
   render() {
     const {homes} = this.props;
-    const {showDetails, showFilter, selectedItem, filteredRange} = this.state;
+    const {showDetails, showFilter, selectedItem} = this.state;
     const data = this.onFilter();
-    // const range = this.getOriginalRange(homes);
     const canRender = (homes.length !== 0);
-    // const filteredList = this.onFilter();
-    // const sortedHomes_.sortBy(homes, 'pricePerMonth'));
-    // console.log('currentHomeList', currentHomeList)
-
 
     return (
-      <View>
+      <View style={styles.wrapper}>
         {canRender ?
           <View>
             {showDetails ?
