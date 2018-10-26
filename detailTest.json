@@ -1,0 +1,92 @@
+{
+  "description": null,
+  "thingsWeLike": null,
+  "thingsToKeepInMind": null,
+  "id": 226273,
+  "features": {
+    "1000": true,
+    "1103": true,
+    "1200": true,
+    "3000": true,
+    "3007": true,
+    "3009": true,
+    "3012": true,
+    "3013": true,
+    "3015": true,
+    "3017": true,
+    "3024": true,
+    "3100": true,
+    "4000": true,
+    "4002": true,
+    "4004": true,
+    "4007": true,
+    "4101": true,
+    "4108": true,
+    "5003": true,
+    "5005": true,
+    "5007": true,
+    "6000": true
+  },
+  "adId": 226266,
+  "roomId": 226273,
+  "type": "room_shared",
+  "title": "Se alquila habitación en piso de 8 dormitorios en Pirámides, Madrid",
+  "mainPhotoUrl": "https://d1052pu3rm1xk9.cloudfront.net/smww_768_verified_ur_6_50/0e6d57a889406b75f369695317dc0fb0da9e61761f88246f298d16a9.jpg",
+  "photoUrls": {
+    "homecardHidpi": "https://d1052pu3rm1xk9.cloudfront.net/pt_640_480/0e6d57a889406b75f369695317dc0fb0da9e61761f88246f298d16a9.jpg",
+    "homecard": "https://d1052pu3rm1xk9.cloudfront.net/pt_320_240/0e6d57a889406b75f369695317dc0fb0da9e61761f88246f298d16a9.jpg"
+  },
+  "pricePerMonth": 400,
+  "monthlyPrice": {
+    "type": "fixed",
+    "minimumPrice": 400,
+    "fixedPrice": 400
+  },
+  "visited": false,
+  "neighborhoodName": "unsupported neighborhood name",
+  "runnerName": "Javier",
+  "url": "/es/madrid/for-rent:rooms/226273",
+  "favorite": false,
+  "checked": true,
+  "currencySymbol": "€",
+  "currencyLabel": "EUR",
+  "currencyIsoCode": "EUR",
+  "sharedRoom": true,
+  "roomType": [
+    6000
+  ],
+  "aptFeatures": [
+    3017,
+    3009,
+    3100,
+    3007,
+    3012,
+    3024,
+    3000,
+    3013,
+    3015
+  ],
+  "roomFeatures": [
+    4101,
+    4108,
+    4000,
+    4002,
+    4004,
+    4007
+  ],
+  "suitFeatures": [
+    1103
+  ],
+  "relevance": 470,
+  "city": "madrid",
+  "refreshAvailabilitiesDate": "2018-10-26T10:15:09+0000",
+  "reviews": {
+    "count": 0,
+    "ratingAverage": 0
+  },
+  "instantBooking": {
+    "isEnabled": false,
+    "rules": []
+  },
+  "isNew": false
+}

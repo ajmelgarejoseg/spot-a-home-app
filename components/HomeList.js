@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import {ActivityIndicator, FlatList, StyleSheet, Text, TouchableWithoutFeedback, View, BackHandler} from 'react-native';
 import {connect} from 'react-redux';
-import {getHomes} from "../redux/reducer";
-import {Header} from "react-native-elements";
-import PriceSlider from "./PriceSlider";
-import ViewDetails from "./ViewDetails";
+import {getHomes} from '../redux/reducer';
+import {Header} from 'react-native-elements';
+import PriceSlider from './PriceSlider';
+import ViewDetails from './ViewDetails';
 import _ from 'lodash';
 
 const styles = StyleSheet.create({
@@ -160,7 +160,6 @@ class HomeList extends Component {
                 />
                 {showFilter ?
                   <PriceSlider
-                    testID={'filter'}
                     onFilterChange={value => this.onFilterChange(value)}
                     onClearFilter={range => this.onClearFilter(range)}
                     onChangeOrder={this.onChangeOrder.bind(this)}

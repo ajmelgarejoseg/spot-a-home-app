@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from 'react'
 import {Linking, StyleSheet, Text, View} from 'react-native'
-import {Button, Card, Header, Icon} from "react-native-elements";
+import {Button, Card, Header, Icon} from 'react-native-elements';
+import testDetails from './../detailTest.json';
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -49,7 +50,8 @@ const styles = StyleSheet.create({
 class ViewDetails extends Component {
 
   render() {
-    const {details, goBack} = this.props;
+    const {goBack} = this.props;
+    const details = this.props.details ? this.props.details : testDetails; // testing...
 
     return (
       <View style={styles.wrapper}>
@@ -59,6 +61,7 @@ class ViewDetails extends Component {
                 centerComponent={{text: '[spotahome]', style: {color: '#fff'}}}
         />
         <Card
+          testID={'card'}
           containerStyle={styles.card}
           title={details.title}
           titleStyle={styles.title}
@@ -83,7 +86,6 @@ class ViewDetails extends Component {
               </Text>
               :
               <Text style={styles.text}>
-
                 {'Single room'}
               </Text>
             }

@@ -9,8 +9,8 @@ const styles = StyleSheet.create({
     display: 'flex',
     borderWidth: 2,
     borderBottomColor: '#00C146',
-    borderBottomLeftRadius:20,
-    borderBottomRightRadius:20,
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
     borderTopColor: '#e8fce6',
     borderRightColor: '#00C146',
     borderLeftColor: '#00C146'
@@ -55,7 +55,7 @@ class PriceSlider extends Component {
     super(props);
     const {rangePrice} = this.props;
     this.state = {
-      filterValue: rangePrice,
+      filterValue: rangePrice ? rangePrice : [340, 430], //testing...
       ascPrice: true,
     };
   }
@@ -80,55 +80,52 @@ class PriceSlider extends Component {
   }
 
   render() {
-    // console.log('rangePrice', this.props.rangePrice);
     const {rangePrice, currency} = this.props;
     const {filterValue, ascPrice} = this.state;
     return (
       <View style={styles.priceWrapper}>
-        <View style={styles.priceRange}>
+        <View style={styles.priceRange} testID={'priceRange'}>
           <Text style={styles.rangeText}>
-            {filterValue[0] + currency  + ' - ' + filterValue[1] + currency}
+            {filterValue[0] + currency + ' - ' + filterValue[1] + currency}
           </Text>
         </View>
-        <View style={styles.multiSlider}>
+        <View style={styles.multiSlider} testID={'multiSlider'}>
           <MultiSlider
             sliderLength={280}
             onValuesChange={(value) => this.valueChange(value)}
             values={filterValue}
-            min={rangePrice[0]}
-            max={rangePrice[1]}
+            min={rangePrice ? rangePrice[0] : 340} // testing...
+            max={rangePrice ? rangePrice[1] : 430} // testing...
           />
         </View>
-        <View>
-          <View style={styles.buttonWrapper}>
+        <View style={styles.buttonWrapper} testID={'buttonWrapper'}>
+          <Button
+            textStyle={{color: '#00C146'}}
+            buttonStyle={styles.button}
+            onPress={this.onClearButton.bind(this)}
+            title={'CLEAR'}
+          />
+          <Button
+            textStyle={{color: '#00C146'}}
+            buttonStyle={styles.button}
+            onPress={this.onApplyButton.bind(this)}
+            title={'APPLY'}
+          />
+          {ascPrice ?
             <Button
-              textStyle={{ color: '#00C146' }}
+              textStyle={{color: '#00C146'}}
               buttonStyle={styles.button}
-              onPress={this.onClearButton.bind(this)}
-              title={'CLEAR'}
+              onPress={this.onChangeOrder.bind(this)}
+              title={'DESC'}
             />
+            :
             <Button
-              textStyle={{ color: '#00C146' }}
+              textStyle={{color: '#00C146'}}
               buttonStyle={styles.button}
-              onPress={this.onApplyButton.bind(this)}
-              title={'APPLY'}
+              onPress={this.onChangeOrder.bind(this)}
+              title={'ASC'}
             />
-            {ascPrice ?
-              <Button
-                textStyle={{ color: '#00C146' }}
-                buttonStyle={styles.button}
-                onPress={this.onChangeOrder.bind(this)}
-                title={'DESC'}
-              />
-              :
-              <Button
-                textStyle={{ color: '#00C146' }}
-                buttonStyle={styles.button}
-                onPress={this.onChangeOrder.bind(this)}
-                title={'ASC'}
-              />
-            }
-          </View>
+          }
         </View>
       </View>
     )
