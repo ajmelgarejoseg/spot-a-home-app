@@ -10,6 +10,8 @@ import _ from 'lodash';
 const styles = StyleSheet.create({
   wrapper: {
     display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   container: {
     flex: 1,
@@ -52,9 +54,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#00C146'
   },
-  horizontal: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
+  loading: {
+    flexDirection: 'column',
+    height: '100%',
     padding: 10
   },
   indicatorContainer: {
@@ -158,6 +160,7 @@ class HomeList extends Component {
                 />
                 {showFilter ?
                   <PriceSlider
+                    testID={'filter'}
                     onFilterChange={value => this.onFilterChange(value)}
                     onClearFilter={range => this.onClearFilter(range)}
                     onChangeOrder={this.onChangeOrder.bind(this)}
@@ -175,7 +178,7 @@ class HomeList extends Component {
             }
           </View>
           :
-          <View style={[styles.container, styles.horizontal]}>
+          <View style={[styles.wrapper, styles.loading]}>
             <ActivityIndicator size="large" color="#0000ff" />
           </View>
         }

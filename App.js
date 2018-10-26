@@ -6,7 +6,7 @@ import axios from 'axios';
 import axiosMiddleware from 'redux-axios-middleware';
 
 import reducer from "./redux/reducer";
-import RepoList from "./components/HomeList";
+import HomeList from "./components/HomeList";
 
 const client = axios.create({
   baseURL: 'https://www.spotahome.com',
@@ -19,9 +19,7 @@ export default class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        <View style={styles.container}>
-          <RepoList store={store}/>
-        </View>
+          <HomeList/>
       </Provider>
     );
   }
